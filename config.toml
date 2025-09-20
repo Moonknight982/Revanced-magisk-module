@@ -14,7 +14,7 @@ rv-brand = "Inotia00 ReVanced"
 arch = "arm-v7a"
 build-mode = "module"
 version = "19.47.53"
-excluded-patches = "'Theme' 'GmsCore support"
+excluded-patches = "'Theme' 'GmsCore support''Custom branding name for YouTube' 'Custom branding icon for YouTube'"
 
 
 
