@@ -1,66 +1,58 @@
 enable-magisk-update = true # set this to false if you do not want to receive updates for the module in magisk app
-parallel-jobs = 1
+parallel-jobs = 1                    # amount of cores to use for parallel patching, if not set $(nproc) is used
+compression-level = 9                # module zip compression level
+remove-rv-integrations-checks = true # remove checks from the revanced integrations
 
-# add 'enabled = false' for not patching a specific app or remove it from the config
-# see https://github.com/j-hc/revanced-magisk-module/blob/main/CONFIG.md for more detailed explanations
+patches-source = "inotia00/revanced-patches" # where to fetch patches bundle from. default: "revanced/revanced-patches"
+cli-source = "inotia00/revanced-cli"             # where to fetch cli from. default: "j-hc/revanced-cli"
+# options like cli-source can also set per app
+rv-brand = "ReVanced Extended" # rebrand from 'ReVanced' to something different. default: "ReVanced"
 
-# you can use rvmm-con
+patches-version = "latest" # 'latest', 'dev', or a version number. default: "latest"
+cli-version = "latest"       # 'latest', 'dev', or a version number. default: "latest"
 
-[Youtube]
-apkmirror-dlurl = "https://apkmirror.com/apk/google-inc/youtube/"
-patches-source = "Inotia00/revanced-patches"
-integrations-source = "Inotia00/revanced-integrations"
-rv-brand = "Inotia00 ReVanced"
-arch = "arm-v7a"
-build-mode = "module"
-version = "19.47.53"
-excluded-patches = "'Theme' 'GmsCore support''Custom branding name for YouTube' 'Custom branding icon for YouTube'"
+[Some-App]
+app-name = "Youtube" # if set, release name becomes SomeApp instead of Some-App. default is same as table name, which is 'Some-App' here.
+enabled = true       # whether to build the app. default: true
+build-mode = "both"   # 'both', 'apk' or 'module'. default: apk
 
+# 'auto' option gets the latest possible version supported by all the included patches
+# 'latest' gets the latest stable without checking patches support. 'beta' gets the latest beta/alpha
+# whitespace seperated list of patches to exclude. default: ""
+version = "auto"     # 'auto', 'latest', 'beta' or a version number (e.g. '17.40.41'). default: auto
 
+# optional args to be passed to cli. can be used to set patch options
+# multiline strings in the config is supported
+patcher-args = """\
+  -App icon=youtube \
+  -Change splash icons=false \
+  -Restore old splash animation=true \
+  """
 
-# https://github.com/j-hc/revanced-magisk-module/issues/554
-[Music-Extended]
-enabled = false
-app-name = "Music"
-patches-source = "inotia00/revanced-patches"
-cli-source = "inotia00/revanced-cli"
-rv-brand = "ReVanced Extended"
-build-mode = "both"
-arch = "both"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube-music"
+excluded-patches = """\
+  'Alternative thumbnails' \
+  'Change live ring click action' \
+  'Change start page' \
+  'Custom shorts action buttons' \
+  'Custom branding name for Youtube' \
+  'Description components' \
+  'Disable resuming Miniplayer on startup' \
+  'GmsCore support' \
+  'Miniplayer' \
+  'Overlay buttons' \
+  'Seekbar components' \
+  'Shorts components' \
+  'Themes' \
+  'Translations for Youtube' \
+  'Visual preferences icons for Youtube' \
+  """
 
-[YouTube-Extended]
-enabled = "false"
-app-name = "YouTube"
-patches-source = "inotia00/revanced-patches"
-cli-source = "inotia00/revanced-cli"
-rv-brand = "ReVanced Extended"
-build-mode = "module"
+included-patches = "'Custom header for Youtube' 'Force hide player buttons background' 'MaterialYou' 'Return Youtube username' "                          # whitespace seperated list of non-default patches to include. default: ""
+include-stock = true                                       # includes stock apk in the module. default: true
+exclusive-patches = false                                  # exclude all patches by default. default: false
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
-
-[Twitch]
-enabled = false
-apkmirror-dlurl = "https://www.apkmirror.com/apk/twitch-interactive-inc/twitch/"
-uptodown-dlurl = "https://twitch.en.uptodown.com/android"
-# archive-dlurl = "https://archive.org/download/jhc-apks/apks/tv.twitch.android.app"
-
-[Twitter]
-enabled = false
-apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter"
-build-mode = "apk"
-dpi = "120-640dpi"
-# archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.twitter.android"
-
-[TikTok]
-enabled = false
-# archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.zhiliaoapp.musically"
-included-patches = "'SIM spoof'"
-
-[Messenger]
-enabled = false
-apkmirror-dlurl = "https://www.apkmirror.com/apk/facebook-2/messenger/"
-arch = "arm64-v8a"
-
-[IconPackStudio]
-enabled = false
-apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/icon-pack-studio/"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+module-prop-name = "RVX-Module"                       # magisk module prop name.
+apkmirror-dpi = "360-480dpi"                               # used to select apk variant from apkmirror. default: nodpi
+arch = "arm-v7a"                                         # 'arm64-v8a', 'arm-v7a', 'all', 'both'. 'both' downloads both arm64-v8a and arm-v7a. default: all
+riplib = true                                              # enables ripping x86 and x86_64 libs from apks with j-hc revanced cli. default: true
